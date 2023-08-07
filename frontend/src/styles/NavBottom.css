@@ -1,0 +1,46 @@
+.bottomNavBar {
+    display: none;
+}
+  @media (orientation: portrait) {
+    .bottomNavBar {
+      display: grid;
+      grid-template-columns: 28% 28% 28% 16%;
+      background-color: #0b88cc;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+    }
+    .bottomNavBar_Div label {
+        color: white;
+    }
+    .bottomNavBar_Div {
+      display: grid;
+      grid-template-rows: 40% 20%;
+      justify-content: center;
+      border-left: 1px solid blue;
+      border-right: 1px solid blue;
+      cursor: pointer;
+      color: white;
+      text-align: center;
+      padding: 5%;
+      margin: 0px;
+      text-decoration: none;
+      transition: background-color 0.3s
+    }
+    .reportListDiv.clicked:hover, .searchBtn:hover, .filterDiv:hover {
+      background-color: rgb(74, 197, 72);
+      transform: translateX(-0px);
+    }
+    .iconSVG {
+        margin: auto;
+        width: 20%;
+    }
+    .exitSVG{
+        width: 30%;
+    }
+    label{
+        margin-top: 12%;
+        font-size: 100%;
+    }
+  }
+  

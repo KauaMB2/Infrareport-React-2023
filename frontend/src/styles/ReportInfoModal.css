@@ -1,0 +1,13 @@
+.show_info_div, .status_div{
+    display: flex;
+}
+.finalComment_div p {
+    word-wrap: break-word;/*Defines that the p tag MUST break the line when arrive in the end of the div*/
+}
+.image_div{
+    border: 4px solid rgb(56, 56, 56);
+    border-radius: 10px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}

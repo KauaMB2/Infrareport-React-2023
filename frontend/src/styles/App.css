@@ -1,0 +1,32 @@
+button,
+button label {
+  cursor: pointer;
+}
+
+.NotFound_div {
+  display: grid;
+  place-items: center;
+  height: 200px;
+}
+.NotFound_text {
+  text-align: center;
+}
+.loggedInStyles{
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 17% 83%;
+  grid-template-rows: 1fr;
+}
+@media (orientation: portrait) {
+  .leftNavbar {
+    display: none;
+  }
+  .loggedInStyles{
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 90% 10%;
+  }
+}

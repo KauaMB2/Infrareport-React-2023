@@ -1,0 +1,46 @@
+.state_name_input_div {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 100%;
+    column-gap: 10px;
+    grid-template-columns: 58.5% 40%;
+}
+.loginDiv_welcome_image{
+    display: block;
+    margin: auto;
+}
+.state_name_input_div>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.state_name_input_div>.email_cep_div{
+    width: 100%;
+    display: grid;
+    grid-template-rows: 100%;
+    column-gap: 10px;
+    grid-template-columns: 58.5% 40%;
+}
+.dropdownState{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 20% 63%;
+}
+@media (orientation: portrait){
+    .state_name_input_div, .name_email_input_div,.password_state_input_div,.city_informations_input_div{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+    }
+    .loginDiv_welcome_image{
+        display: none;
+    }
+    .loginDiv_welcome{
+        margin-bottom: 25px;
+    }
+    .email_cep_div{
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 1fr;
+    }
+}

@@ -1,0 +1,85 @@
+main {
+    display: block;
+}
+
+.background {
+    background-image: url("../images/loginBackground.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+}
+
+.loginDiv_alignment {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.loginDiv {
+    margin: auto;
+    width: 45%;
+    height: auto;
+    padding: 1em;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+}
+
+.loginDiv_welcome {
+    display: grid;
+    grid-template-rows: auto auto;
+}
+
+.loginDiv_welcome_row {
+    margin: auto;
+}
+
+label {
+    font-weight: bold;
+}
+
+
+.logo {
+    width: 10em;
+    height: 10em;
+    margin: auto;
+}
+
+.buttonsDiv {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    margin-top: 10px;
+}
+.dropdown-menu{
+    overflow-y: scroll;
+    max-height: 100px;
+}
+.ufBtn {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 8px 16px;
+}
+#selectedUF{
+    color: red;
+    font-weight: bold;
+}
+.loginBtn{
+    margin-right: 10px;
+}
+.email_password_input_div{
+    display: grid;
+    grid-template-columns: 50% 48%;
+    column-gap: 2%;
+}
+@media (orientation: portrait){
+    .email_password_input_div{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+    }
+}

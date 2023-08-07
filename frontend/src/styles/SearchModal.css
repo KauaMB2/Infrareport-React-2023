@@ -1,0 +1,17 @@
+.date_time_div{
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 10px;
+}
+.date_time_div{
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 20px;
+    grid-template-rows:  auto auto;
+}
+@media (max-width: 300px) and (max-height: 700px) {
+    .date_time_div .formLabel,
+    .show_info_div p {
+        font-size: 10px;
+    }
+}

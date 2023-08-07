@@ -1,0 +1,78 @@
+.loginDiv {
+    width: 75%;
+}
+.loginDiv_welcome_image{
+    display: block;
+    margin: auto;
+}
+.password_state_input_div {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 100%;
+    column-gap: 10px;
+    grid-template-columns: 50% 40%;
+}
+
+
+.name_email_input_div {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 100%;
+    column-gap: 10px;
+    grid-template-columns: 60% 37.5%;
+}
+
+.city_informations_input_div {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 100%;
+    column-gap: 20px;
+    grid-template-columns: 60.5% 35.5%;
+}
+.dropdownState{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 20% 63%;
+}
+.city_informations_input_div>div,
+.name_email_input_div>div,
+.password_state_input_div>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.password_state_input_div>.email_cep_div {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 100%;
+    column-gap: 10px;
+    grid-template-columns: 58.5% 40%;
+}
+.city_informations_input_div>.city_street_div{
+    width: 100%;
+    display: grid;
+    column-gap: 10px;
+    grid-template-columns: 60% 40%;
+    grid-template-rows: 100%;
+}
+.city_informations_input_div>.neighborhood_number_div{
+    width: 100%;
+    display: grid;
+    column-gap: 10px;
+    grid-template-columns: 73% 25%;
+    grid-template-rows: 100%;
+}
+@media (orientation: portrait){
+    .password_state_input_div{
+        grid-template-rows: 58.5% 40%;
+        grid-template-columns: 100%;
+    }
+    .loginDiv_welcome_image{
+        display: none;
+    }
+    .dropdownState{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 20% 90%;
+    }
+}

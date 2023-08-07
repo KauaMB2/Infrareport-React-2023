@@ -1,0 +1,13 @@
+.mapContainer {
+    width: 100%;
+    height: 100%;
+}
+.mapWidthHeight{
+    width: 100%;
+    height: 100%;
+}
+@media (orientation: portrait){
+    label{
+        margin-top: 0px;
+    }
+}
