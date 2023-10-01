@@ -7,105 +7,135 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import { useNavigate } from 'react-router-dom'
 
-const Login = ({loggedIn, setLoggedIn, userEmail, userPassword, setEmail, setPassword}) => {
-    const navigate=useNavigate()
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        try {
-            const formData = {
-                email: userEmail,
-                password: userPassword,
-            }
-
-            const response = await fetch("http://127.0.0.1:8000/login/city", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            })
-            const data = await response.json()
-            if (!response.ok) {
-                const errorInfo=await response.json()
-                alert("Senha ou email incorrretos.")
-                alert(errorInfo.error)
-                console.log(JSON.stringify(errorInfo.error))
-                throw new Error('Failed to submit form')
-            }
-            setLoggedIn(true)
-            localStorage.setItem('isLoggedIn', true)
-            localStorage.setItem('citizenAccount', false)
-            localStorage.setItem('email', formData.email)
-            localStorage.setItem('password', formData.password)
-            localStorage.setItem('cep', data.cep)
-            navigate('/')
-        } catch (error) {
-            console.error(error)
+const Login = ({ setErrorCode, setErrorMessage, errorCode, errorMessage, showErrorModal, setShowErrorModal, setCep, cep, setMarkerPoints, markerPoints, loggedIn, setLoggedIn, userEmail, userPassword, setEmail, setPassword }) => {
+  const navigate = useNavigate()
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const formData = {
+        email: userEmail,
+        password: userPassword,
+      }
+      const response = await fetch("https://infrareportapi2--infrareportfeti.repl.co/login/city", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+      const data = await response.json()
+      if (!response.ok) {
+        setErrorCode(response.status)
+        setErrorMessage(data.Erro)
+        setShowErrorModal(true)
+        return
+      }
+      setCep(data.cep)
+      try {
+        var link = `https://infrareportapi2--infrareportfeti.repl.co/getAllOccurrences/${data.cep}/${0}/${userEmail}/${userPassword}`
+        const response2 = await fetch(link, {
+          method: "GET"
+        })
+        const occurrencesData = await response2.json()
+        if (!response2.ok) {
+          setErrorCode(response2.status)
+          setErrorMessage(occurrencesData.Erro)
+          setShowErrorModal(true)
+          return
         }
+        const pointsData = occurrencesData.map((currentData) => (
+          {
+            position: {
+              lat: currentData.latitude,
+              lng: currentData.longitude
+            },
+            id: currentData.id,
+            concluded: currentData.concluded,
+            occurrence_type: currentData.occurrence_type
+          }
+        ))
+        setMarkerPoints(pointsData)
+      } catch (error) {
+        setErrorCode("Erro desconhecido(0X006)")
+        setErrorMessage(error.toString())
+        setShowErrorModal(true)
+      }
+      setLoggedIn(true)
+      localStorage.setItem('isLoggedIn', true)
+      localStorage.setItem('citizenAccount', false)
+      localStorage.setItem('email', formData.email)
+      localStorage.setItem('password', formData.password)
+      localStorage.setItem('cep', data.cep)
+      navigate('/')
+    } catch (error) {
+      setErrorCode("Erro desconhecido(0X007)")
+      setErrorMessage(error.toString())
+      setShowErrorModal(true)
     }
-    return (
-        <main className="animate__animated background animate__pulse">
-            <div className="animate__animated loginDiv_alignment animate__pulse ">
-                <div className="loginDiv">
-                    <div className="loginDiv_welcome">
-                        <h4 id="welcomeText" className="loginDiv_welcome_row">Seja Bem Vindo ao Infrareport!</h4>
-                        <Link id="logoImg" className="loginDiv_welcome_row" to='/citizenRegister'>
-                            <img src={logoPNG} className="logo" alt="logo" />
-                        </Link>
-                    </div>
-                    <form onSubmit={handleSubmit}>
-                        <div className="email_password_input_div">
-                            <div>
-                                <label htmlFor="email">Endereço de Email:</label>
-                                <input
-                                    type="email"
-                                    className="form-control"
-                                    id="email"
-                                    name="email"
-                                    aria-describedby="emailHelp"
-                                    placeholder="Digite o email"
-                                    value={userEmail}
-                                    onChange={(e)=>{setEmail(e.target.value)}}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="password">Senha:</label>
-                                <input
-                                    type="password"
-                                    className="form-control"
-                                    id="password"
-                                    name="password"
-                                    placeholder="Senha"
-                                    value={userPassword}
-                                    onChange={(e)=>{setPassword(e.target.value)}}
-                                />
-                            </div>
-                        </div>
-                        <div className="buttonsDiv">
-                            <button type="submit" className="btn-submit btn btn-primary">
-                                Login
-                            </button>
-                            <div className="right-buttons">
-                            <Link to="/cityRegister" className="loginBtn">
-                                    <button type="button" className="btn-submit btn btn-outline-secondary">
-                                        Registrar
-                                    </button>
-                                </Link>
-                                <Link to="/login/citizen" className="cityBtn">
-                                    <button type="button" className="btn-submit btn btn-outline-secondary">
-                                        Sou cidadão
-                                    </button>
-                                </Link>
-                            </div>
-                        </div>
-
-
-                    </form>
-
-                </div>
+  }
+  return (
+    <main className="animate__animated background animate__pulse">
+      <div className="animate__animated loginDiv_alignment animate__pulse ">
+        <div className="loginDiv">
+          <div className="loginDiv_welcome">
+            <h4 id="welcomeText" className="loginDiv_welcome_row">Seja Bem Vindo ao Infrareport!</h4>
+            <Link id="logoImg" className="loginDiv_welcome_row" to='/citizenRegister'>
+              <img src={logoPNG} className="logo" alt="logo" />
+            </Link>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="email_password_input_div">
+              <div>
+                <label htmlFor="email">Endereço de Email:</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="email"
+                  name="email"
+                  aria-describedby="emailHelp"
+                  placeholder="Digite o email"
+                  value={userEmail}
+                  onChange={(e) => { setEmail(e.target.value) }}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">Senha:</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="Senha"
+                  value={userPassword}
+                  onChange={(e) => { setPassword(e.target.value) }}
+                />
+              </div>
             </div>
-        </main>
-    )
+            <div className="buttonsDiv">
+              <button type="submit" className="btn-submit btn btn-primary">
+                Login
+              </button>
+              <div className="right-buttons">
+                <Link to="/cityRegister" className="loginBtn">
+                  <button type="button" className="btn-submit btn btn-outline-secondary">
+                    Registrar
+                  </button>
+                </Link>
+                <Link to="/login/citizen" className="cityBtn">
+                  <button type="button" className="btn-submit btn btn-outline-secondary">
+                    Sou cidadão
+                  </button>
+                </Link>
+              </div>
+            </div>
+
+
+          </form>
+
+        </div>
+      </div>
+    </main>
+  )
 }
 
 export default Login

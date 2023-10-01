@@ -2,31 +2,60 @@ import React from "react"
 import { Button, Form, Modal } from "react-bootstrap"
 import "./styles/SearchModal.css"
 
-const SearchModal = ({ imageUrls, setImageUrls, treatImage, setSearchedData, searchedData, cep, endDate, setEndDate, startDate, setStartDate, selectedOption, setSelectedOption, showSearchModal, setShowSearchModal, infraestructureProblems, handleSearch }) => {
-  const handleSearchOccurrence=async ()=>{
-    if (!startDate || !endDate){
-      alert("Selecione uma data.")
+const SearchModal = ({ userEmail, userPassword, citizenAccount, setShowErrorModal, setErrorCode, setErrorMessage, errorCode, errorMessage, imageUrls, setImageUrls, treatImage, setSearchedData, searchedData, cep, endDate, setEndDate, startDate, setStartDate, selectedOption, setSelectedOption, showSearchModal, setShowSearchModal, infraestructureProblems, handleSearch }) => {
+  const handleSearchOccurrence = async () => {
+    if (!startDate || !endDate) {
+      setErrorCode("Data não selecionada")
+      setErrorMessage("Por favor, selecione a data de início e fim.")
+      setShowErrorModal(true)
       return
     }
     try {
-      const url = `http://127.0.0.1:8000/searchOccurrences/${cep}/${startDate}/${endDate}/${selectedOption}` // Replace with the actual API endpoint
-      const response = await fetch(url)
-      if (!response.ok){
-        throw new Error('Network response was not ok')
+      var response
+      var data
+      if (selectedOption === "Todas") {
+        var link
+        if (citizenAccount) {
+          link = `https://infrareportapi2--infrareportfeti.repl.co/getAllOccurrences/${cep}/${1}/${userEmail}/${userPassword}`
+        } else {
+          link = `https://infrareportapi2--infrareportfeti.repl.co/getAllOccurrences/${cep}/${0}/${userEmail}/${userPassword}`
+        }
+        response = await fetch(link, {
+          method: "GET"
+        })
+        data = await response.json()
+      } else {
+        var url
+        if (citizenAccount) {
+          url = `https://infrareportapi2--infrareportfeti.repl.co/searchOccurrences/${cep}/${startDate}/${endDate}/${selectedOption}/${1}/${userEmail}/${userPassword}` // Replace with the actual API endpoint
+        }
+        if (!citizenAccount) {
+          url = `https://infrareportapi2--infrareportfeti.repl.co/searchOccurrences/${cep}/${startDate}/${endDate}/${selectedOption}/${0}/${userEmail}/${userPassword}` // Replace with the actual API endpoint
+        }
+        response = await fetch(url)
+        data = await response.json()
       }
-      const data = await response.json()
+      if (!response.ok) {
+        setErrorCode(response.status)
+        setErrorMessage(data.Erro)
+        setShowErrorModal(true)
+        return
+      }
       setSearchedData(data)
-      return 
-    } catch (error){
-      console.error('Error fetching data:', error)
-      throw error
+    } catch (error) {
+      setErrorCode("Erro desconhecido(0X010)")
+      setErrorMessage(error.toString())
+      setShowErrorModal(true)
+      return
     }
   }
+  
   return (
     <>
       <Modal show={showSearchModal} onHide={() => {
         setSearchedData(null)
-        setShowSearchModal(false)}}>
+        setShowSearchModal(false)
+      }}>
         <Modal.Header className="bg-primary" closeButton>
           <Modal.Title className="text-center text-white bg-primary">Pesquise as ocorrências</Modal.Title>
         </Modal.Header>
@@ -40,8 +69,9 @@ const SearchModal = ({ imageUrls, setImageUrls, treatImage, setSearchedData, sea
                 id="dropdown-basic"
                 className="mb-4"
                 defaultValue={selectedOption}
-                onChange={(event)=>(setSelectedOption(event.target.value))}
+                onChange={(event) => (setSelectedOption(event.target.value))}
               >
+                <option>Todas</option>
                 {infraestructureProblems.map((problem, key) => (
                   <option key={key}>{problem}</option>
                 ))}
@@ -75,7 +105,8 @@ const SearchModal = ({ imageUrls, setImageUrls, treatImage, setSearchedData, sea
         <Modal.Footer>
           <Button variant="outline-secondary" onClick={() => {
             setSearchedData(null)
-            setShowSearchModal(false)}}>
+            setShowSearchModal(false)
+          }}>
             Cancelar
           </Button>
           <Button variant="primary" onClick={handleSearchOccurrence}>
@@ -84,14 +115,14 @@ const SearchModal = ({ imageUrls, setImageUrls, treatImage, setSearchedData, sea
         </Modal.Footer>
         <hr></hr>
         <Modal.Body>
-        {
-            searchedData instanceof Array && searchedData.map((currentSearchedData, index)=>{
+          {
+            searchedData instanceof Array && searchedData.map((currentSearchedData, index) => {
               return (
                 <React.Fragment key={index}>
                   <div className="form-group">
-                    <img src={imageUrls[currentSearchedData.id]} className="image_div" alt="Occurrence Image" />
+                    <img src={imageUrls[currentSearchedData.id]} className="image_div" alt="Occurrence" />
                   </div>
-                  <br/>
+                  <br />
                   <div className="show_info_div">
                     <Form.Label className="formLabel">Tipo de ocorrência:</Form.Label>
                     <p>{currentSearchedData.occurrence_type}</p>
@@ -118,7 +149,8 @@ const SearchModal = ({ imageUrls, setImageUrls, treatImage, setSearchedData, sea
                   </div>
                   <hr></hr>
                 </React.Fragment>
-            )})
+              )
+            })
           }
         </Modal.Body>
       </Modal>

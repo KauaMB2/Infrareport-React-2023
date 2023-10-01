@@ -43,7 +43,7 @@ const Reports = ({reportsLabels, reportsCount, typeLabels, typeCount}) => {
                     <Bar className='bar_chart' data={typeData} options={options} />
                 </div>
                 <div className='chart_item'>
-                    <h3>Bairros com mais ocorrências:</h3>
+                    <h3>Ruas com mais ocorrências:</h3>
                     <Bar className='bar_chart' data={reportsData} options={options} />
                 </div>
             </div>

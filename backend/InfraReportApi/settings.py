@@ -16,7 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -26,8 +25,14 @@ SECRET_KEY = 'django-insecure-(@zj8-mdunik@m4$fflzxt)81zi9&%z!n(_2ao5bx+st-9$_d9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    "localhost",
+    '127.0.0.1',  # Para acesso local durante o desenvolvimento
+    'infrareportapi2--infrareportfeti.repl.co',
+    'infrareportapi2.infrareportfeti.repl.co',
+    '10.20.1.232',
+    '10.20.1.107'
+]
 
 # Application definition
 
@@ -38,9 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',#Add the api folder in the project
-    'rest_framework',#Add django rest framework in the project
-    'corsheaders'#Add the cors library
+    'api',  #Add the api folder in the project
+    'rest_framework',  #Add django rest framework in the project
+    'corsheaders'  #Add the cors library
 ]
 
 MIDDLEWARE = [
@@ -55,7 +60,10 @@ MIDDLEWARE = [
 ]
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    "https://infrareport.kauamoreira.repl.co",
+    'https://infrareport.kauamoreira.repl.co',
+    'https://infrareportapi2--infrareportfeti.repl.co',
+    "https://127.0.0.1:8000",
+    "https://localhost:8000"
 ]
 ROOT_URLCONF = 'InfraReportApi.urls'
 
@@ -77,40 +85,47 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'InfraReportApi.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'InfraReportDB',  # Name of your MySQL database
-        'USER': 'root',  # MySQL username
-        'PASSWORD': '12345',  # MySQL password
-        'HOST': 'localhost',  # MySQL server address
-        'PORT': '3306',  # MySQL port (default is 3306)
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'InfraReportDB',  # Name of your MySQL database
+#         'USER': 'root',  # MySQL username
+#         'PASSWORD': '12345',  # MySQL password
+#         'HOST': 'localhost',  # MySQL server address
+#         'PORT': '3306',  # MySQL port (default is 3306)
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -122,7 +137,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
